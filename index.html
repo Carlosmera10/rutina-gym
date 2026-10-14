@@ -358,12 +358,8 @@ function go(k, exId){
   const [k, id] = location.hash.slice(1).split("/");
   go(k || store("tecnica-gym:pestana") || "piernas", id);
   window.addEventListener("hashchange", () => { const [k2,id2] = location.hash.slice(1).split("/"); go(k2,id2); });
-  // Desactiva el modo sin conexión de versiones anteriores, solo el de esta app
-  // (las demás apps del mismo dominio no se tocan).
-  if ("serviceWorker" in navigator) navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => {
-    if (/\/(rutina-gym|tecnica-gym)\//.test(r.scope)) r.unregister();
-  })).catch(()=>{});
-  if (window.caches) caches.keys().then(ks => ks.filter(k => k.startsWith("tecnica-")).forEach(k => caches.delete(k))).catch(()=>{});
+  // Modo sin conexión (solo afecta a esta app, no a las demás del mismo dominio).
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(()=>{});
 })();
 </script>
 </body>

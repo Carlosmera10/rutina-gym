@@ -7,7 +7,7 @@ App web para consultar en el móvil, durante el entrenamiento, cómo hacer cada 
 - **Superseries opcionales** que se pueden hacer sin ocupar dos máquinas.
 - **Guía**: reglas generales y señales para parar.
 
-Se puede añadir a la pantalla de inicio del móvil.
+Funciona sin conexión una vez abierta y se puede añadir a la pantalla de inicio del móvil. Cuando hay conexión descarga siempre la última versión.
 
 ## Publicarla con GitHub Pages
 
