@@ -7,7 +7,7 @@ App web para consultar en el móvil, durante el entrenamiento, cómo hacer cada 
 - **Superseries opcionales** que se pueden hacer sin ocupar dos máquinas.
 - **Guía**: reglas generales y señales para parar.
 
-Funciona sin conexión una vez abierta y se puede añadir a la pantalla de inicio del móvil.
+Se puede añadir a la pantalla de inicio del móvil.
 
 ## Publicarla con GitHub Pages
 
@@ -20,5 +20,3 @@ Funciona sin conexión una vez abierta y se puede añadir a la pantalla de inici
 Todo está en `index.html`:
 - Las fichas de técnica están en la constante `EX`.
 - Los ejercicios de cada día (orden, series y superseries) están en la constante `DAYS`.
-
-La app descarga siempre la última versión cuando hay conexión; la copia guardada solo se usa sin conexión.
