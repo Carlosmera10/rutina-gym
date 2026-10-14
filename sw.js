@@ -1,8 +1,8 @@
 // Guarda la app para usarla sin conexión en el gimnasio.
 // Primero intenta descargar de internet (así siempre ves la última versión);
 // solo si no hay conexión usa la copia guardada.
-const CACHE = "tecnica-v5";
-const FILES = ["./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "icon-maskable-512.png"];
+const CACHE = "tecnica-v6";
+const FILES = ["./", "index.html", "app.webmanifest", "icon.svg", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(f, { cache: "reload" })))));
