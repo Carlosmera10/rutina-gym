@@ -337,14 +337,14 @@ function toggleTheme(){
   const cur = document.documentElement.dataset.theme ||
     (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   const next = cur === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = next; store("tema", next);
+  document.documentElement.dataset.theme = next; store("tecnica-gym:tema", next);
 }
 
 function go(k, exId){
   if (!TABS.includes(k)) k = "piernas";
   renderPlates(k);
   if (k === "guia") renderGuide(); else renderDay(k);
-  store("pestana", k);
+  store("tecnica-gym:pestana", k);
   const hash = exId ? `#${k}/${exId}` : `#${k}`;
   if (location.hash !== hash) history.replaceState(null, "", hash);
   if (exId){
@@ -354,9 +354,9 @@ function go(k, exId){
 }
 
 (function init(){
-  const t = store("tema"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+  const t = store("tecnica-gym:tema"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
   const [k, id] = location.hash.slice(1).split("/");
-  go(k || store("pestana") || "piernas", id);
+  go(k || store("tecnica-gym:pestana") || "piernas", id);
   window.addEventListener("hashchange", () => { const [k2,id2] = location.hash.slice(1).split("/"); go(k2,id2); });
   if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
 })();
