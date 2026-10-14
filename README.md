@@ -21,4 +21,4 @@ Todo está en `index.html`:
 - Las fichas de técnica están en la constante `EX`.
 - Los ejercicios de cada día (orden, series y superseries) están en la constante `DAYS`.
 
-Si cambias algo, sube también el número de versión en `sw.js` (`tecnica-v2` → `tecnica-v3`) para que el móvil descargue la versión nueva.
+Si cambias algo, sube también el número de versión en `sw.js` (`tecnica-v3` → `tecnica-v4`) para que el móvil descargue la versión nueva.
