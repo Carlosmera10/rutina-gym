@@ -1,16 +1,31 @@
 // Guarda la app para usarla sin conexión en el gimnasio.
-const CACHE = "tecnica-v4";
+// Primero intenta descargar de internet (así siempre ves la última versión);
+// solo si no hay conexión usa la copia guardada.
+const CACHE = "tecnica-v5";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon.svg", "icon-192.png", "icon-512.png", "icon-maskable-512.png"];
-self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES))); self.skipWaiting(); });
+
+self.addEventListener("install", e => {
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES.map(f => new Request(f, { cache: "reload" })))));
+  self.skipWaiting();
+});
+
 self.addEventListener("activate", e => {
   e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))));
   self.clients.claim();
 });
+
 self.addEventListener("fetch", e => {
-  if (e.request.method !== "GET") return;
-  e.respondWith(caches.open(CACHE).then(async cache => {
-    const cached = await cache.match(e.request);
-    const net = fetch(e.request).then(r => { if (r.ok || r.type === "opaque") cache.put(e.request, r.clone()); return r; }).catch(() => cached);
-    return cached || net;
-  }));
+  const req = e.request;
+  if (req.method !== "GET") return;
+  e.respondWith(
+    fetch(req, { cache: "no-store" })
+      .then(res => {
+        if (res.ok && new URL(req.url).origin === location.origin) {
+          const copy = res.clone();
+          caches.open(CACHE).then(c => c.put(req, copy));
+        }
+        return res;
+      })
+      .catch(() => caches.match(req).then(r => r || caches.match("index.html")))
+  );
 });

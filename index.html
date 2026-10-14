@@ -358,7 +358,7 @@ function go(k, exId){
   const [k, id] = location.hash.slice(1).split("/");
   go(k || store("tecnica-gym:pestana") || "piernas", id);
   window.addEventListener("hashchange", () => { const [k2,id2] = location.hash.slice(1).split("/"); go(k2,id2); });
-  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js", { updateViaCache: "none" }).catch(()=>{});
 })();
 </script>
 </body>
