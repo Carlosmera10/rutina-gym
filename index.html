@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Técnica de los ejercicios</title>
+<meta name="description" content="Técnica, alternativas y orden de los ejercicios de mi rutina de gimnasio.">
+<meta name="theme-color" content="#15181B" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#F3F4F5" media="(prefers-color-scheme: light)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --floor:#F3F4F5; --deck:#FFFFFF; --line:#D9DDE1; --chalk:#16191C; --muted:#56606B;
+  --p1:#D93A39; --p2:#2C66DB; --p3:#F2C230; --p4:#23885A; --p5:#FFFFFF;
+  --on1:#FFFFFF; --on2:#FFFFFF; --on3:#1A1A12; --on4:#FFFFFF; --on5:#16191C;
+  --caution:#B4540F; --alt:#1F6F4A; --alt-bg:#E6F3EC;
+  --radius-s:8px; --radius-m:14px;
+  --font:"Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --floor:#15181B; --deck:#1F2328; --line:#30363D; --chalk:#EEF0F2; --muted:#A3ADB8;
+    --p5:#E9ECEF; --caution:#F0A35E; --alt:#7FD3A6; --alt-bg:#17302A;
+  }
+}
+:root[data-theme="dark"]{
+  --floor:#15181B; --deck:#1F2328; --line:#30363D; --chalk:#EEF0F2; --muted:#A3ADB8;
+  --p5:#E9ECEF; --caution:#F0A35E; --alt:#7FD3A6; --alt-bg:#17302A;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--floor);color:var(--chalk);font-family:var(--font);font-size:17px;line-height:1.5;
+  font-variation-settings:"wdth" 100;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--chalk);outline-offset:3px;border-radius:6px}
+
+/* Barra de discos */
+.rack{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--floor) 92%,transparent);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+  padding:10px 16px 8px;padding-top:max(10px,env(safe-area-inset-top))}
+.plates{display:flex;justify-content:space-between;max-width:560px;margin:0 auto;gap:4px}
+.plate{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:0;padding:2px 0;cursor:pointer;min-width:0}
+.disc{--c:var(--p1);--on:var(--on1);width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+  border:4px solid var(--c);background:var(--deck);position:relative;
+  font-weight:800;font-size:20px;font-variation-settings:"wdth" 70;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.disc::after{content:"";position:absolute;inset:6px;border-radius:50%;border:1.5px solid currentColor;opacity:.28}
+.plate[aria-selected="true"] .disc{background:var(--c);color:var(--on);transform:scale(1.08)}
+.plate-label{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap;font-variation-settings:"wdth" 80}
+.plate[aria-selected="true"] .plate-label{color:var(--chalk)}
+.plate[data-k="piernas"] .disc{--c:var(--p1);--on:var(--on1)}
+.plate[data-k="torso"] .disc{--c:var(--p2);--on:var(--on2)}
+.plate[data-k="fullbody"] .disc{--c:var(--p3);--on:var(--on3)}
+.plate[data-k="core"] .disc{--c:var(--p4);--on:var(--on4)}
+.plate[data-k="guia"] .disc{--c:var(--p5);--on:var(--on5);border-color:var(--line)}
+.plate[data-k="guia"][aria-selected="true"] .disc{border-color:var(--chalk)}
+
+main{max-width:640px;margin:0 auto;padding:20px 16px 64px;padding-bottom:max(64px,env(safe-area-inset-bottom))}
+
+/* Cabecera de día */
+.day-head{padding:8px 0 18px;border-bottom:6px solid var(--accent);margin-bottom:8px}
+.day-head h1{margin:0;font-size:56px;line-height:.95;font-weight:800;letter-spacing:-.5px;
+  font-variation-settings:"wdth" 62;text-transform:none}
+.day-meta{margin:10px 0 0;color:var(--muted);font-size:16px}
+.day-note{margin:8px 0 0;font-size:16px}
+
+/* Lista de ejercicios */
+.ex{border-bottom:1px solid var(--line)}
+.ex summary{list-style:none;display:grid;grid-template-columns:34px 1fr auto 18px;align-items:center;gap:12px;
+  padding:14px 0;cursor:pointer;min-height:64px}
+.ex summary::-webkit-details-marker{display:none}
+.num{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-on);display:grid;place-items:center;
+  font-weight:800;font-size:16px;font-variation-settings:"wdth" 70}
+.ex-name{font-weight:700;font-size:18px;line-height:1.25;font-variation-settings:"wdth" 88}
+.ex-sets{display:block;color:var(--muted);font-weight:500;font-size:15px;margin-top:2px;font-variation-settings:"wdth" 100}
+.chip{font-size:13px;font-weight:700;padding:4px 9px;border-radius:999px;border:1.5px solid var(--line);white-space:nowrap;color:var(--muted)}
+.chip.fixed{border-color:var(--chalk);color:var(--chalk)}
+.chev{width:18px;height:18px;transition:transform .25s ease;color:var(--muted)}
+.ex[open] .chev{transform:rotate(180deg)}
+.ex.plain summary{cursor:default}
+.ex.plain .chev{visibility:hidden}
+
+.card{padding:4px 0 22px 46px}
+.tagline{margin:0 0 14px;color:var(--muted);font-size:15px}
+.card h3{margin:18px 0 8px;font-size:15px;font-weight:800;font-variation-settings:"wdth" 75;letter-spacing:.2px}
+.card h3:first-of-type{margin-top:0}
+.how{margin:0;padding-left:22px}
+.how li{margin:0 0 8px;padding-left:4px}
+.how li::marker{font-weight:800;color:var(--muted)}
+.avoid{margin:0;padding:0;list-style:none;border-left:4px solid var(--caution);padding-left:14px}
+.avoid li{margin:0 0 8px}
+.alts{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.alts li{background:var(--alt-bg);color:var(--alt);font-weight:600;font-size:15px;padding:7px 12px;border-radius:var(--radius-s);line-height:1.3}
+.ss{margin-top:16px;border:2px dashed var(--accent);border-radius:var(--radius-m);padding:10px 14px;font-size:15px}
+.ss b{font-weight:800}
+.order-help{margin-top:14px;color:var(--muted);font-size:15px}
+
+/* Guía */
+.guide h1{margin:8px 0 18px;font-size:56px;line-height:.95;font-weight:800;font-variation-settings:"wdth" 62;padding-bottom:18px;border-bottom:6px solid var(--chalk)}
+.guide h2{font-size:28px;line-height:1.1;margin:34px 0 12px;font-weight:800;font-variation-settings:"wdth" 70}
+.guide h3{font-size:17px;margin:18px 0 6px;font-weight:800}
+.guide p{margin:0 0 10px}
+.rules{margin:0;padding:0;list-style:none;counter-reset:r}
+.rules li{counter-increment:r;padding:12px 0 12px 46px;position:relative;border-bottom:1px solid var(--line)}
+.rules li::before{content:counter(r);position:absolute;left:0;top:12px;width:32px;height:32px;border-radius:50%;
+  border:3px solid var(--chalk);display:grid;place-items:center;font-weight:800;font-size:15px}
+.rules b{display:block}
+.two{display:grid;gap:12px}
+@media (min-width:560px){.two{grid-template-columns:1fr 1fr}}
+.box{background:var(--deck);border:1px solid var(--line);border-radius:var(--radius-m);padding:14px 16px}
+.box ul{margin:0;padding-left:20px}
+.box li{margin-bottom:6px}
+.box.stop{border-left:6px solid var(--p1)}
+.box.go{border-left:6px solid var(--p4)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--muted);font-weight:700}
+.signals{display:grid;gap:10px}
+.signal{background:var(--deck);border:1px solid var(--line);border-radius:var(--radius-m);padding:12px 16px}
+.signal b{display:block;margin-bottom:2px}
+.foot{margin-top:40px;color:var(--muted);font-size:14px}
+.theme-btn{margin-top:10px;background:var(--deck);border:1px solid var(--line);border-radius:999px;padding:8px 14px;cursor:pointer;font-size:14px}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="rack">
+  <nav class="plates" role="tablist" aria-label="Sesiones" id="plates"></nav>
+</header>
+<main id="main" tabindex="-1"></main>
+
+<script>
+const EX = {"abduccion": {"tag": "Día 1 · Ej. 6 (↔ 5, 7) · 2 × 15–20 reps · RIR 1", "title": "Abducción de cadera en máquina", "how": ["Siéntate al fondo con la espalda apoyada; inclinar un poco el tronco adelante implica más el glúteo.", "Abre las piernas en 1 s y aguanta 1 s en la apertura máxima.", "Cierra en 2–3 s sin dejar que las placas choquen.", "La pelvis no se mueve del asiento en toda la serie."], "avoid": ["No uses el tronco para impulsarte ni balancees las piernas.", "Rango cómodo: forzar la apertura con mucho peso carga la cadera, no el glúteo.", "Peso moderado y tensión constante en las 15–20 repeticiones."], "altLabel": "Si está ocupado", "alts": ["abducción en polea baja con tobillera", "pasos laterales con banda elástica", "abducción tumbado de lado"]}, "aduccion": {"tag": "Día 1 · Ej. 7 (↔ 5, 6) · 2 × 15–20 reps · RIR 1", "title": "Aducción de cadera en máquina", "how": ["Siéntate al fondo con la espalda apoyada y las almohadillas por la cara interna de las rodillas.", "Elige una apertura inicial en la que notes estiramiento sin tirón en la ingle.", "Junta las piernas en 1 s y aguanta 1 s con las almohadillas casi juntas.", "Abre en 2–3 s controlando, sin que las placas choquen."], "avoid": ["No fuerces la apertura: los aductores se lesionan sobre todo en estiramiento con carga.", "Pelvis quieta en el asiento; sin balanceos ni impulso.", "Si molesta la ingle, reduce la apertura inicial antes que el peso."], "altLabel": "Si está ocupado", "alts": ["aducción en polea baja con tobillera", "Copenhague corto (rodilla apoyada en banco)", "sentadilla sumo con mancuerna"]}, "curl-biceps": {"tag": "Día 2 · Ej. 7 (↔ 6, 8) · 2 × 10–12 reps · RIR 1 · Los alternas entre semanas", "title": "Curl inclinado con mancuernas o en polea por detrás", "how": ["Inclinado: banco a 45–60°, espalda apoyada y brazos colgando verticales, por detrás del tronco.", "En polea: de espaldas a la polea baja, un paso adelante, con el brazo ligeramente por detrás del cuerpo.", "Sube flexionando solo el codo, palma hacia arriba; aprieta 1 s.", "Baja en 2–3 s hasta estirar el brazo: el estiramiento es lo que hace eficaces estos dos curls."], "avoid": ["El hombro no se adelanta al subir: el codo se queda donde empezó.", "Peso moderado: en estiramiento, el tendón del bíceps trabaja más expuesto.", "Siempre después del jalón y del remo."], "altLabel": "Si está ocupado", "alts": ["el otro de los dos curls", "curl con mancuernas de pie", "curl con barra Z"]}, "curl-femoral": {"tag": "Día 1 · Ej. 1 (fijo) · Día 3 · Ej. 5 (↔ 6) · 10–15 reps · RIR 1", "title": "Curl femoral sentado", "how": ["Ajusta el respaldo para que la rodilla quede alineada con el eje de la máquina y el rodillo justo por encima del tobillo.", "Baja la almohadilla de los muslos hasta que te sujete bien e inclina un poco el tronco hacia delante: el isquio se estira más.", "Flexiona hasta el final del recorrido y aguanta 1 s.", "Vuelve en 2–3 s hasta estirar la pierna, sin soltar la tensión."], "avoid": ["No despegues la cadera del asiento ni arquees la lumbar para terminar la repetición.", "Sin golpes al final de la bajada: la rodilla no se bloquea de golpe.", "Si notas tirón detrás de la rodilla, revisa la alineación con el eje."], "altLabel": "Si está ocupado", "alts": ["curl femoral tumbado", "curl de pie en polea baja con tobillera (unilateral)", "curl femoral con fitball"]}, "dead-bug": {"tag": "Comba + core · Ej. 2 (después de la comba) · 2 × 20 (10 por lado)", "title": "Dead bug", "how": ["Boca arriba, brazos hacia el techo y caderas y rodillas a 90°.", "Pega la zona lumbar al suelo; una mano debajo te sirve para comprobarlo.", "Extiende a la vez brazo y pierna contrarios sin que la lumbar se despegue, expulsando el aire.", "Vuelve al centro y cambia de lado. Unos 3 s por repetición."], "avoid": ["Si la lumbar se separa del suelo, no estires tanto la pierna.", "No aguantes la respiración.", "Es control, no fatiga: calidad antes que número de repeticiones."], "altLabel": "Alternativas", "alts": ["bird-dog", "dead bug con banda elástica sujeta a un poste (más difícil)"]}, "ext-cuad": {"tag": "Día 1 · Ej. 5 (↔ 6, 7) · 3 × 12–15 reps · Fallo técnico", "title": "Extensión de cuádriceps", "how": ["Rodilla alineada con el eje de la máquina; el rodillo sobre el empeine, justo encima del tobillo.", "Espalda apoyada y manos en las asas para que la cadera no se levante.", "Extiende hasta casi bloquear y aguanta 1 s arriba.", "Baja en 2–3 s hasta unos 90° antes de la siguiente repetición."], "avoid": ["Sin impulso ni balanceo: si la cadera se levanta del asiento, sobra peso.", "Si molesta la rodilla, limita la bajada al rango sin dolor.", "Fallo técnico: paras cuando la técnica se rompe, no cuando el peso deja de moverse."], "altLabel": "Si está ocupado", "alts": ["extensión unilateral en polea con tobillera", "step-up a cajón con mancuernas", "split squat con mancuernas"]}, "face-pull": {"tag": "Día 2 · Ej. 10 (tras el 3) · Día 3 · Ej. 10 (tras el 7) · 2 × 15–20 reps · RIR 2", "title": "Face pull en polea con cuerda", "how": ["Polea a la altura de los ojos o un poco más alta; agarra la cuerda con los pulgares hacia ti.", "Da un paso atrás con el pecho alto y el abdomen firme.", "Tira hacia la frente separando las manos, con los codos por encima de las muñecas.", "Al final gira los antebrazos hacia arriba y aguanta 1 s."], "avoid": ["Peso ligero y nunca al fallo: el objetivo es activar, no agotar.", "No tires hacia el cuello ni con los codos bajos: se convierte en un remo.", "No te eches hacia atrás para compensar."], "altLabel": "Si está ocupado", "alts": ["face pull con banda elástica", "pull-apart con banda", "pájaros en pec deck inverso"]}, "hip-thrust": {"tag": "Día 1 · Ej. 3 (↔ 2) · Día 3 · Ej. 6 (↔ 5) · 10–12 reps · RIR 1", "title": "Hip thrust en máquina", "how": ["Escápulas apoyadas en el respaldo; la almohadilla o el cinturón de la máquina sobre la cadera.", "Pies a la anchura de las caderas, colocados para que la tibia quede vertical arriba.", "Barbilla recogida y mirada al frente; sube empujando con los talones hasta alinear hombros, cadera y rodillas.", "Aprieta el glúteo 1 s arriba y baja controlando."], "avoid": ["Sube con la cadera, no con la lumbar: arriba, costillas abajo y pelvis hacia atrás, sin arquear.", "¿Notas más el isquio? Acerca los pies. ¿El cuádriceps? Aléjalos.", "En la alternativa con barra, usa siempre almohadilla."], "altLabel": "Si está ocupado", "alts": ["hip thrust con barra en banco", "hip thrust en Multipower", "puente de glúteo en el suelo con mancuerna o disco"]}, "jalon": {"tag": "Día 2 · Ej. 2 (bloque 1–4) · Día 3 · Ej. 3, agarre cerrado (bloque 1–4) · 3 series", "title": "Jalón al pecho", "how": ["Muslos sujetos bajo el rodillo y tronco algo inclinado hacia atrás (10–15°).", "Empieza bajando las escápulas; después tira llevando los codos hacia los costados.", "La barra llega a la parte alta del pecho, nunca detrás de la nuca.", "Sube controlando hasta estirar los brazos y notar el dorsal."], "avoid": ["Nada de jalón tras nuca: fuerza el hombro en su peor posición.", "Sin balanceo: echar el cuerpo atrás para mover más peso carga la lumbar.", "Día 3, agarre cerrado: más recorrido y más amable para el hombro; codos pegados al cuerpo."], "altLabel": "Si está ocupado", "alts": ["jalón en máquina de palanca", "jalón unilateral en polea alta", "dominadas asistidas"]}, "laterales": {"tag": "Día 2 · Ej. 6, 2 series (↔ 7, 8) · Día 3 · Ej. 7, 3 series (↔ 8, 9) · 12–15 reps", "title": "Elevaciones laterales en polea, unilateral", "how": ["De lado a la polea, coge el estribo con la mano más alejada; la otra se apoya en la máquina.", "Tronco un poco inclinado hacia fuera y codo ligeramente flexionado.", "Sube el brazo hacia el lado hasta la altura del hombro, guiando con el codo.", "Baja en 2–3 s sin que la placa llegue a tocar."], "avoid": ["No subas por encima del hombro ni encojas el trapecio.", "Muñeca neutra: no gires el pulgar hacia abajo («vaciar la jarra»).", "Progresa en repeticiones antes que en peso: las placas pegan saltos grandes."], "altLabel": "Si está ocupado", "alts": ["elevaciones laterales con mancuernas (como el 06/10)", "máquina de laterales", "elevaciones con banda elástica"]}, "martillo": {"tag": "Día 3 · Ej. 8 (↔ 7, 9) · 2 × 10–12 reps · RIR 1", "title": "Curl martillo con mancuernas", "how": ["De pie, rodillas suaves y abdomen firme; mancuernas a los lados con las palmas mirándose.", "Codos pegados al costado durante toda la serie.", "Sube sin girar la muñeca hasta que la mancuerna llegue a la altura del hombro.", "Baja en 2–3 s hasta estirar el brazo."], "avoid": ["Sin balanceo del tronco: con la lumbar delicada, la trampa no compensa.", "Muñeca recta y firme; el pulgar mira al techo todo el recorrido.", "Si alternas brazos, el tronco no gira hacia el lado que sube."], "altLabel": "Si está ocupado", "alts": ["curl martillo en polea con cuerda", "curl con mancuernas", "curl con barra Z"]}, "pec-deck": {"tag": "Día 2 · Ej. 5 (tras el press inclinado) · 2 × 12–15 reps · RIR 1", "title": "Aperturas en máquina (pec deck)", "how": ["Asiento a la altura que deja las asas a nivel del pecho y los codos algo por debajo de los hombros.", "Espalda apoyada, escápulas atrás y pecho alto.", "Codos ligeramente flexionados y fijos; junta las manos delante dibujando un arco.", "Abre en 2–3 s hasta notar estiramiento en el pecho."], "avoid": ["No abras más allá de la línea del cuerpo: ahí el hombro queda más expuesto.", "Hombros abajo, lejos de las orejas.", "Que las placas no descansen entre repeticiones."], "altLabel": "Si está ocupado", "alts": ["cruce de poleas", "aperturas con mancuernas en banco", "aperturas en polea baja de pie"]}, "pmr": {"tag": "Día 1 · Ej. 4 (fijo) · 8–10 reps · RIR 3 → 2 → 1 · Calentamiento obligatorio", "title": "Peso muerto rumano con mancuernas", "how": ["De pie, pies a la anchura de las caderas y rodillas ligeramente flexionadas y fijas.", "Lleva la cadera hacia atrás como si cerraras una puerta con el glúteo; las mancuernas bajan pegadas a los muslos.", "Baja hasta notar tensión en los isquios, normalmente entre la rodilla y media tibia.", "Sube llevando la cadera adelante y apretando el glúteo, sin echarte hacia atrás arriba."], "avoid": ["Espalda neutra siempre: el recorrido acaba donde la espalda empezaría a redondearse.", "Coge aire y aprieta el abdomen antes de cada bajada; escápulas atrás.", "Es el ejercicio de más riesgo lumbar: ninguna repetición fea y nunca al fallo."], "altLabel": "Si está ocupado", "alts": ["peso muerto rumano con barra", "en Multipower", "pull-through en polea baja con cuerda"]}, "prensa": {"tag": "Día 1 · Ej. 2 (↔ 3) · Día 3 · Ej. 2 (bloque 1–4) · 8–10 reps · Calentamiento obligatorio", "title": "Prensa de pierna", "how": ["Espalda y glúteos pegados al respaldo durante toda la serie; agarra las asas.", "Pies a la anchura de las caderas, en el centro de la plataforma y con las puntas algo abiertas.", "Baja en 2–3 s hasta unos 90° de rodilla o justo antes de que la pelvis se despegue.", "Empuja con todo el pie y para antes de bloquear las rodillas."], "avoid": ["El límite lo marca la pelvis: si el coxis se levanta del asiento, la lumbar se flexiona con carga. Acorta el recorrido.", "Rodillas en la línea de los pies, sin que se cierren hacia dentro.", "Abdomen firme; no aguantes el aire varias repeticiones seguidas."], "altLabel": "Si está ocupado", "alts": ["hack squat", "sentadilla goblet con mancuerna", "sentadilla búlgara con mancuernas"]}, "press-banca": {"tag": "Día 3 · Ej. 1 (bloque 1–4) · 3 × 8–10 reps · RIR 1 · 2 series de aproximación", "title": "Press de pecho en máquina", "how": ["Ajusta el asiento para que las asas queden a la altura de la mitad del pecho.", "Espalda apoyada, escápulas juntas y abajo, pies firmes en el suelo.", "Empuja sin bloquear los codos de golpe, con los codos a 45–60° del tronco.", "Vuelve en 2–3 s hasta notar estiramiento en el pecho, sin que las placas descansen."], "avoid": ["Escápulas fijas: el hombro no se despega del respaldo al final del empuje.", "Si el asiento está bajo, el hombro trabaja forzado: revisa la altura cada vez.", "No arquees la lumbar para mover más peso."], "altLabel": "Si está ocupado", "alts": ["press con mancuernas en banco plano", "press de banca en Multipower", "flexiones"]}, "press-hombro": {"tag": "Día 2 · Ej. 3 (bloque 1–4, entre dos tirones) · 2 × 8–10 reps · RIR 1", "title": "Press de hombro en máquina", "how": ["Asiento a la altura que deja las asas a nivel de los hombros o algo por debajo.", "Espalda entera apoyada, abdomen firme y pies en el suelo.", "Codos ligeramente por delante del tronco, no abiertos del todo a los lados.", "Empuja hasta casi estirar y baja en 2–3 s."], "avoid": ["No arquees la lumbar para subir: si la espalda se separa del respaldo, sobra peso.", "Si notas pinchazo al bajar, no pases de la altura de las orejas.", "Dos series de aproximación antes de la primera serie, como ya haces."], "altLabel": "Si está ocupado", "alts": ["press con mancuernas sentado con respaldo vertical", "press landmine", "press Arnold"]}, "press-inclinado": {"tag": "Día 2 · Ej. 1 (bloque 1–4) · 3 × 8–10 reps · RIR 1 · 2 series de aproximación", "title": "Press inclinado con mancuernas", "how": ["Banco a unos 30°. Siéntate con las mancuernas sobre los muslos y súbelas al tumbarte ayudándote de las rodillas.", "Escápulas juntas y abajo, pecho alto y pies firmes en el suelo.", "Baja en 2–3 s hasta la altura del pecho, con los codos a 45–60° del tronco.", "Empuja hacia arriba y ligeramente hacia dentro, sin chocar las mancuernas."], "avoid": ["Al acabar, lleva las mancuernas al pecho y apóyalas en los muslos al incorporarte; no las sueltes a los lados con los brazos estirados.", "No bajes más allá de la línea del pecho si notas el hombro.", "Glúteo siempre en el banco; arco natural, no exagerado."], "altLabel": "Si está ocupado", "alts": ["press inclinado en Multipower", "press inclinado en máquina", "flexiones con los pies elevados"]}, "remo-mancuerna": {"tag": "Día 3 · Ej. 4 (bloque 1–4) · Nuevo · 3 × 10–12 por brazo · RIR 1", "title": "Remo con mancuerna a un brazo, apoyado en banco", "how": ["Rodilla y mano del mismo lado apoyadas en el banco; el otro pie firme en el suelo, algo atrás.", "Espalda neutra, casi paralela al suelo, y la mancuerna colgando bajo el hombro.", "Tira llevando el codo hacia la cadera, pegado al cuerpo, y aguanta 1 s.", "Baja en 2–3 s hasta estirar el brazo y notar el dorsal."], "avoid": ["El tronco no gira para subir el peso: los hombros quedan paralelos al banco.", "La mano apoyada sostiene el tronco, así la lumbar no carga: no la quites.", "No encojas el hombro hacia la oreja."], "altLabel": "Si está ocupado", "alts": ["remo con mancuernas tumbado en banco inclinado", "remo sentado en máquina", "remo en polea baja sentado"]}, "remo-pecho": {"tag": "Día 2 · Ej. 4 (bloque 1–4) · 3 × 10–12 reps · RIR 1", "title": "Remo sentado en máquina", "how": ["Ajusta el asiento para que las asas queden a la altura del pecho; pecho bien apoyado.", "Inicia el movimiento llevando las escápulas hacia atrás.", "Tira con los codos hacia la cadera, cerca del cuerpo, y aguanta 1 s.", "Vuelve controlando y deja que las escápulas se separen al final."], "avoid": ["Si despegas el pecho del apoyo, estás usando impulso: baja el peso.", "No subas los hombros hacia las orejas.", "El apoyo descarga la lumbar: es tu remo más seguro, aprovéchalo."], "altLabel": "Si está ocupado", "alts": ["remo con mancuernas tumbado en banco inclinado", "remo con mancuerna a un brazo apoyado", "remo en polea baja sentado"]}, "triceps-cabeza": {"tag": "Día 3 · Ej. 9 (↔ 7, 8) · 2 × 10–12 reps · RIR 1", "title": "Extensión de tríceps por encima de la cabeza en polea", "how": ["De espaldas a la polea, cuerda por detrás de la cabeza y un pie adelantado.", "Tronco ligeramente inclinado, abdomen firme y costillas abajo.", "Codos apuntando al frente y quietos; extiende hasta estirar los brazos por delante de la cabeza.", "Vuelve en 2–3 s hasta notar estiramiento en el tríceps."], "avoid": ["No arquees la lumbar al extender: el pie adelantado y el abdomen firme lo evitan.", "Codos cerca de la cabeza; si se abren, sobra peso.", "Si molesta el hombro en el estiramiento, acorta el recorrido."], "altLabel": "Si está ocupado", "alts": ["extensión por encima de la cabeza con mancuerna", "press francés con mancuernas", "extensión en polea alta"]}, "triceps": {"tag": "Día 2 · Ej. 8 (↔ 6, 7) · 2 × 10–12 reps · RIR 1 · Después de los presses", "title": "Extensión de tríceps en polea (pushdown)", "how": ["Polea alta con barra o cuerda; tronco ligeramente inclinado y abdomen firme.", "Codos pegados al costado y quietos durante toda la serie.", "Extiende hasta abajo y aguanta 1 s; con cuerda, separa los extremos al final.", "Sube controlando hasta que el antebrazo pase de la horizontal."], "avoid": ["Solo se mueve el antebrazo: si los codos suben y bajan, sobra peso.", "No te eches encima del agarre con el peso del cuerpo.", "Si molesta el codo, cambia a cuerda o barra en V."], "altLabel": "Si está ocupado", "alts": ["extensión con cuerda", "extensión por encima de la cabeza con mancuerna", "fondos en banco"]}, "y-raise": {"tag": "Día 2 · Ej. 9 (tras el press de hombro) · 2 × 15–20 reps · RIR 2", "title": "Y-raise con apoyo en pecho (mancuernas)", "how": ["Boca abajo en un banco inclinado a 30–45°, pecho apoyado y una mancuerna ligera en cada mano.", "Antes de subir, lleva los hombros hacia abajo y atrás.", "Sube los brazos estirados en diagonal formando una «Y», con los pulgares hacia arriba.", "Llega a la altura de la cabeza, aguanta 1 s y baja en 3 s."], "avoid": ["Si los hombros suben hacia las orejas, sobra peso: debe trabajar el trapecio inferior.", "Pulgares arriba: es la posición más segura para el hombro.", "El pecho no se despega del banco; sin impulso de la lumbar."], "altLabel": "Si está ocupado", "alts": ["Y-raise en polea baja", "Y-raise tumbado en el suelo sin peso", "Y-raise con banda"]}};
+
+const DAYS = {
+  piernas: { n:"1", label:"Piernas", title:"Piernas", c:"p1", on:"on1", meta:"Día 1 · 7 ejercicios · ~65–75 min",
+    note:"El día con más carga lumbar: series de aproximación en prensa, hip thrust y peso muerto rumano.",
+    rows:[
+      [1,"curl-femoral","Curl femoral sentado","3 × 10–12","Fijo"],
+      [2,"prensa","Prensa horizontal","3 × 8–10","↔ 3"],
+      [3,"hip-thrust","Hip thrust en máquina","3 × 10–12","↔ 2"],
+      [4,"pmr","Peso muerto rumano","2 × 8–10","Fijo"],
+      [5,"ext-cuad","Extensión de cuádriceps","3 × 12–15","↔ 6, 7"],
+      [6,"abduccion","Abducción de cadera","2 × 15–20","↔ 5, 7"],
+      [7,"aduccion","Aducción de cadera","2 × 15–20","↔ 5, 6"],
+    ],
+    ss:{6:"Con la aducción (7), solo si es una máquina doble.",
+        7:"Con la abducción (6), solo si es una máquina doble."}
+  },
+  torso: { n:"2", label:"Torso", title:"Torso + Hombro", c:"p2", on:"on2", meta:"Día 2 · 10 ejercicios · ~65–75 min",
+    note:"Escápulas atrás y abajo en todos los empujes y tirones. Los cuatro primeros alternan empuje y tirón.",
+    rows:[
+      [1,"press-inclinado","Press inclinado con mancuernas","3 × 8–10","Bloque 1–4"],
+      [2,"jalon","Jalón al pecho","3 × 8–10","Bloque 1–4"],
+      [3,"press-hombro","Press de hombro en máquina","2 × 8–10","Bloque 1–4"],
+      [4,"remo-pecho","Remo sentado en máquina","3 × 10–12","Bloque 1–4"],
+      [5,"pec-deck","Aperturas en máquina","2 × 12–15","Tras el 1"],
+      [6,"laterales","Laterales en polea","2 × 12–15","↔ 7, 8"],
+      [7,"curl-biceps","Curl inclinado o en polea","2 × 10–12","↔ 6, 8"],
+      [8,"triceps","Tríceps en polea (pushdown)","2 × 10–12","↔ 6, 7"],
+      [9,"y-raise","Y-raise con apoyo en pecho","2 × 15–20","Tras el 3"],
+      [10,"face-pull","Face pull","2 × 15–20","Tras el 3"],
+    ],
+    ss:{5:"Con las laterales (6), haciéndolas con mancuernas de pie: máquina + mancuernas.",
+        6:"Con las aperturas (5): en ese caso, laterales con mancuernas de pie.",
+        7:"Con el pushdown (8), solo la semana del curl en polea: misma polea, cambiando la altura.",
+        8:"Con el curl en polea por detrás (7): misma polea, cambiando la altura.",
+        9:"Con el face pull (10), haciendo el Y-raise en polea baja: misma polea.",
+        10:"Con el Y-raise en polea baja (9): misma polea, cambiando la altura."}
+  },
+  fullbody: { n:"3", label:"Full Body", title:"Full Body + Brazos", c:"p3", on:"on3", meta:"Día 3 · 10 ejercicios · ~75–80 min (~70–75 con superseries)",
+    note:"La sesión más flexible. El remo con mancuerna es nuevo y lleva el remo a 6 series por semana.",
+    rows:[
+      [1,"press-banca","Press de pecho en máquina","3 × 8–10","Bloque 1–4"],
+      [2,"prensa","Prensa horizontal","3 × 8–10","Bloque 1–4"],
+      [3,"jalon","Jalón, agarre cerrado","3 × 10–12","Bloque 1–4"],
+      [4,"remo-mancuerna","Remo con mancuerna a un brazo","3 × 10–12","Bloque 1–4"],
+      [5,"curl-femoral","Curl femoral sentado","2 × 12–15","↔ 6"],
+      [6,"hip-thrust","Hip thrust en máquina","2 × 10–12","↔ 5"],
+      [7,"laterales","Laterales en polea","3 × 12–15","↔ 8, 9"],
+      [8,"martillo","Curl martillo","2 × 10–12","↔ 7, 9"],
+      [9,"triceps-cabeza","Tríceps sobre la cabeza en polea","2 × 10–12","↔ 7, 8"],
+      [10,"face-pull","Face pull","2 × 15–20","Tras el 7"],
+    ],
+    ss:{7:"Con el face pull (10): misma polea, laterales abajo y face pull a la altura de los ojos.",
+        8:"Con el tríceps sobre la cabeza (9): polea + mancuernas, de pie junto a la polea.",
+        9:"Con el curl martillo (8): polea + mancuernas, de pie junto a la polea.",
+        10:"Con las laterales en polea (7): misma polea, cambiando la altura."}
+  },
+  core: { n:"C", label:"Core", title:"Comba + core", c:"p4", on:"on4", meta:"2 días intermedios · ~13 min",
+    note:"El core va en estos días y no al final del gimnasio, para no alargar las sesiones ni llegar con el abdomen cansado a los ejercicios con carga.",
+    rows:[
+      [1,null,"Comba","15 × 40 s","Primero"],
+      [2,"dead-bug","Dead bug","2 × 20 (10 por lado)","Después"],
+    ],
+    ss:{}
+  },
+};
+
+const ORDER_HELP = {
+  "Fijo":"No cambies este ejercicio de sitio.",
+  "Primero":"Siempre al empezar.",
+  "Después":"Siempre después de la comba.",
+};
+function orderHelp(o){
+  if (ORDER_HELP[o]) return ORDER_HELP[o];
+  if (o.startsWith("↔")) return "Puedes intercambiarlo con el " + o.slice(1).trim().replace(", "," o el ") + " si la máquina está ocupada.";
+  if (o.startsWith("Bloque")) return "Orden libre dentro del " + o.toLowerCase() + ".";
+  if (o.startsWith("Tras")) return "Siempre después del ejercicio " + o.replace("Tras el ","") + ".";
+  return "";
+}
+
+const TABS = ["piernas","torso","fullbody","core","guia"];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const chev = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+
+function renderPlates(active){
+  const el = document.getElementById("plates");
+  el.innerHTML = TABS.map(k => {
+    const d = DAYS[k];
+    const n = d ? d.n : "i";
+    const label = d ? d.label : "Guía";
+    return `<button class="plate" role="tab" data-k="${k}" aria-selected="${k===active}" aria-controls="main" id="tab-${k}">
+      <span class="disc" aria-hidden="true">${n}</span><span class="plate-label">${label}</span></button>`;
+  }).join("");
+  el.querySelectorAll(".plate").forEach(b => b.addEventListener("click", () => go(b.dataset.k)));
+}
+
+function renderDay(k){
+  const d = DAYS[k];
+  const root = document.documentElement.style;
+  const m = document.getElementById("main");
+  m.style.setProperty("--accent", `var(--${d.c})`);
+  m.style.setProperty("--accent-on", `var(--${d.on})`);
+  const rows = d.rows.map(([n,id,name,sets,ord]) => {
+    const chip = `<span class="chip ${ord==="Fijo"?"fixed":""}">${esc(ord)}</span>`;
+    const head = `<span class="num" aria-hidden="true">${n}</span>
+      <span class="ex-name">${esc(name)}<span class="ex-sets">${esc(sets)}</span></span>${chip}${chev}`;
+    if (!id || !EX[id]) return `<div class="ex plain"><div style="display:grid;grid-template-columns:34px 1fr auto 18px;align-items:center;gap:12px;padding:14px 0;min-height:64px">${head}</div></div>`;
+    const e = EX[id];
+    const ss = d.ss[n] ? `<div class="ss"><b>Superserie opcional</b> · ${esc(d.ss[n])}</div>` : "";
+    return `<details class="ex" id="${k}-${id}" data-id="${id}">
+      <summary>${head}</summary>
+      <div class="card">
+        <p class="tagline">${esc(e.title)}</p>
+        <h3>Cómo hacerlo</h3>
+        <ol class="how">${e.how.map(x=>`<li>${esc(x)}</li>`).join("")}</ol>
+        <h3>Evita lesiones</h3>
+        <ul class="avoid">${e.avoid.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+        <h3>${esc(e.altLabel || "Si está ocupado")}</h3>
+        <ul class="alts">${e.alts.map(x=>`<li>${esc(x.charAt(0).toUpperCase()+x.slice(1))}</li>`).join("")}</ul>
+        ${ss}
+        <p class="order-help"><b>Orden:</b> ${esc(orderHelp(ord))}</p>
+      </div></details>`;
+  }).join("");
+  m.innerHTML = `<section aria-labelledby="tab-${k}">
+    <div class="day-head"><h1>${esc(d.title)}</h1><p class="day-meta">${esc(d.meta)}</p><p class="day-note">${esc(d.note)}</p></div>
+    ${rows}</section>`;
+  m.querySelectorAll("details.ex").forEach(det => det.addEventListener("toggle", () => {
+    if (det.open) history.replaceState(null, "", `#${k}/${det.dataset.id}`);
+    else if (location.hash.startsWith(`#${k}/${det.dataset.id}`)) history.replaceState(null, "", `#${k}`);
+  }));
+}
+
+function renderGuide(){
+  const m = document.getElementById("main");
+  m.style.removeProperty("--accent");
+  m.innerHTML = `<section class="guide" aria-labelledby="tab-guia">
+  <h1>Guía</h1>
+
+  <h2>Cinco reglas para todos los ejercicios</h2>
+  <ol class="rules">
+    <li><b>Calienta siempre</b>General de 5–10 min y, antes de cada compuesto con carga lumbar, dos series al 50% y al 75% del peso de trabajo.</li>
+    <li><b>Tronco firme</b>Coge aire, aprieta el abdomen como si fueran a empujarte y mantén la espalda neutra en cada repetición.</li>
+    <li><b>Tempo controlado</b>1–2 s al subir, 2–3 s al bajar, sin rebotes ni impulsos. El peso lo mueve el músculo, no la inercia.</li>
+    <li><b>RIR honesto</b>RIR 1 significa que podrías hacer una repetición más con buena técnica. Fallo técnico: paras cuando la técnica se rompe.</li>
+    <li><b>Dolor no es esfuerzo</b>El cansancio muscular es normal. Un dolor punzante, que baja por la pierna o con hormigueo significa parar ese ejercicio ese día.</li>
+  </ol>
+
+  <h2>Qué orden se puede cambiar</h2>
+  <p>Si la máquina está ocupada, primero cambia el orden si está permitido; si no, usa la alternativa de cada ficha.</p>
+  <div class="two">
+    <div class="box stop"><h3>No se mueve</h3><ul>
+      <li>Prensa, hip thrust y peso muerto rumano, antes del aislamiento.</li>
+      <li>Piernas: curl femoral antes del peso muerto rumano.</li>
+      <li>Torso: aperturas tras el press inclinado; Y-raise y face pull tras el press de hombro.</li>
+      <li>Bíceps y tríceps, después de jalones, remos y presses.</li>
+      <li>El core, en los días de comba.</li></ul></div>
+    <div class="box go"><h3>Se puede cambiar</h3><ul>
+      <li>Ejercicios grandes del mismo bloque entre sí (prensa ↔ hip thrust; press inclinado, jalón, press de hombro y remo).</li>
+      <li>En Torso, sigue alternando empuje y tirón.</li>
+      <li>Ejercicios de aislamiento entre sí.</li>
+      <li>Las series de aproximación van con el primer ejercicio de cada patrón.</li></ul></div>
+  </div>
+
+  <h2>Superseries opcionales</h2>
+  <div class="box"><ul>
+    <li>Polea + mancuernas, o máquina + mancuernas, sin banco.</li>
+    <li>O dos ejercicios en la misma máquina o polea.</li>
+    <li>Nunca con prensa, hip thrust, peso muerto rumano ni los ejercicios grandes.</li>
+    <li>Sin pausa entre los dos; 1–2 min al acabar la pareja.</li>
+    <li>Si algo está ocupado, por separado.</li></ul></div>
+  <table style="margin-top:12px">
+    <thead><tr><th>Sesión</th><th>Pareja</th><th>Tipo</th></tr></thead>
+    <tbody>
+      <tr><td>Piernas</td><td>6 Abducción + 7 Aducción</td><td>Misma máquina, solo si es doble</td></tr>
+      <tr><td>Torso</td><td>5 Aperturas + 6 Laterales con mancuernas</td><td>Máquina + mancuernas</td></tr>
+      <tr><td>Torso</td><td>7 Curl en polea + 8 Pushdown</td><td>Misma polea</td></tr>
+      <tr><td>Torso</td><td>9 Y-raise en polea + 10 Face pull</td><td>Misma polea</td></tr>
+      <tr><td>Full Body</td><td>8 Curl martillo + 9 Tríceps en polea</td><td>Polea + mancuernas</td></tr>
+      <tr><td>Full Body</td><td>7 Laterales + 10 Face pull</td><td>Misma polea</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Señales para parar</h2>
+  <div class="signals">
+    <div class="signal"><b>Dolor punzante en la lumbar</b>Para la serie y no repitas ese ejercicio hoy. Sigue con los que no la carguen.</div>
+    <div class="signal"><b>Dolor que baja por la pierna</b>Hormigueo o adormecimiento: termina la sesión y consúltalo con un profesional sanitario.</div>
+    <div class="signal"><b>Pinchazo en el hombro</b>Acorta el recorrido o cambia a la alternativa. Si empeora entre series, déjalo por hoy.</div>
+    <div class="signal"><b>Rigidez lumbar tras la comba</b>Cambia uno de los dos días de comba por elíptica o natación.</div>
+  </div>
+  <p style="margin-top:14px">Progresar despacio y sin molestias siempre gana a progresar rápido con riesgo.</p>
+
+  <p class="foot">Rutina basada en el registro de Hevy (octubre de 2026).<br>
+  <button class="theme-btn" id="theme">Cambiar tema claro / oscuro</button></p>
+  </section>`;
+  document.getElementById("theme").addEventListener("click", toggleTheme);
+}
+
+function store(key, val){ try{ if (val===undefined) return localStorage.getItem(key); localStorage.setItem(key,val); }catch(e){ return null; } }
+function toggleTheme(){
+  const cur = document.documentElement.dataset.theme ||
+    (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  const next = cur === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next; store("tema", next);
+}
+
+function go(k, exId){
+  if (!TABS.includes(k)) k = "piernas";
+  renderPlates(k);
+  if (k === "guia") renderGuide(); else renderDay(k);
+  store("pestana", k);
+  const hash = exId ? `#${k}/${exId}` : `#${k}`;
+  if (location.hash !== hash) history.replaceState(null, "", hash);
+  if (exId){
+    const det = document.getElementById(`${k}-${exId}`);
+    if (det){ det.open = true; det.scrollIntoView({block:"start"}); }
+  } else window.scrollTo(0,0);
+}
+
+(function init(){
+  const t = store("tema"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t;
+  const [k, id] = location.hash.slice(1).split("/");
+  go(k || store("pestana") || "piernas", id);
+  window.addEventListener("hashchange", () => { const [k2,id2] = location.hash.slice(1).split("/"); go(k2,id2); });
+  if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(()=>{});
+})();
+</script>
+</body>
+</html>
