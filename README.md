@@ -20,9 +20,3 @@ Funciona sin conexión una vez abierta y se puede añadir a la pantalla de inici
 Todo está en `index.html`:
 - Las fichas de técnica están en la constante `EX`.
 - Los ejercicios de cada día (orden, series y superseries) están en la constante `DAYS`.
-
-Después de cambiar `EX` o `DAYS`, ejecuta `node herramientas/tecnica.js` para regenerar `proyecto-claude/TECNICA.md`.
-
-## Proyecto de Claude
-
-La carpeta `proyecto-claude/` tiene las instrucciones y los documentos de contexto para el proyecto de Claude. Empieza por `proyecto-claude/COMO_USAR.md`.
