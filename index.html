@@ -18,19 +18,19 @@
   --floor:#F3F4F5; --deck:#FFFFFF; --line:#D9DDE1; --chalk:#16191C; --muted:#56606B;
   --p1:#D93A39; --p2:#2C66DB; --p3:#F2C230; --p4:#23885A; --p5:#FFFFFF;
   --on1:#FFFFFF; --on2:#FFFFFF; --on3:#1A1A12; --on4:#FFFFFF; --on5:#16191C;
-  --caution:#B4540F; --alt:#1F6F4A; --alt-bg:#E6F3EC;
+  --caution:#B4540F; --prio-e:#1E9E57; --prio-i:#D9A000; --prio-p:#A2AAB3; --alt:#1F6F4A; --alt-bg:#E6F3EC;
   --radius-s:8px; --radius-m:14px;
   --font:"Archivo", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --floor:#15181B; --deck:#1F2328; --line:#30363D; --chalk:#EEF0F2; --muted:#A3ADB8;
-    --p5:#E9ECEF; --caution:#F0A35E; --alt:#7FD3A6; --alt-bg:#17302A;
+    --p5:#E9ECEF; --caution:#F0A35E; --prio-e:#3FC57C; --prio-i:#F2BD2C; --prio-p:#6E7883; --alt:#7FD3A6; --alt-bg:#17302A;
   }
 }
 :root[data-theme="dark"]{
   --floor:#15181B; --deck:#1F2328; --line:#30363D; --chalk:#EEF0F2; --muted:#A3ADB8;
-  --p5:#E9ECEF; --caution:#F0A35E; --alt:#7FD3A6; --alt-bg:#17302A;
+  --p5:#E9ECEF; --caution:#F0A35E; --prio-e:#3FC57C; --prio-i:#F2BD2C; --prio-p:#6E7883; --alt:#7FD3A6; --alt-bg:#17302A;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -77,6 +77,11 @@ main{max-width:640px;margin:0 auto;padding:20px 16px 64px;padding-bottom:max(64p
   font-weight:800;font-size:16px;font-variation-settings:"wdth" 70}
 .ex-name{font-weight:700;font-size:18px;line-height:1.25;font-variation-settings:"wdth" 88}
 .ex-sets{display:block;color:var(--muted);font-weight:500;font-size:15px;margin-top:2px;font-variation-settings:"wdth" 100}
+.dot{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:0;background:var(--prio-p)}
+.dot.E{background:var(--prio-e)} .dot.I{background:var(--prio-i)} .dot.P{background:var(--prio-p)}
+.prio-word{font-weight:700;color:var(--chalk)}
+.prio-legend{display:flex;flex-wrap:wrap;gap:6px 16px;margin:12px 0 0;padding:0;list-style:none;font-size:15px}
+.prio-legend li{display:flex;align-items:center}
 .chip{font-size:13px;font-weight:700;padding:4px 9px;border-radius:999px;border:1.5px solid var(--line);white-space:nowrap;color:var(--muted)}
 .chip.fixed{border-color:var(--chalk);color:var(--chalk)}
 .chev{width:18px;height:18px;transition:transform .25s ease;color:var(--muted)}
@@ -140,31 +145,33 @@ const EX = {"abduccion": {"tag": "Día 1 · Ej. 6 (↔ 5, 7) · 2 × 15–20 rep
 const DAYS = {
   piernas: { n:"1", label:"Piernas", title:"Piernas", c:"p1", on:"on1", meta:"Día 1 · 7 ejercicios · ~65–75 min",
     note:"El día con más carga lumbar: series de aproximación en prensa, hip thrust y pull-through.",
+    time:{E:"unos 30 min",I:"unos 45–50 min",P:"si te sobra tiempo"},
     rows:[
-      [1,"curl-femoral","Curl femoral sentado","3 × 10–12","Fijo"],
-      [2,"prensa","Prensa horizontal","3 × 8–10","↔ 3"],
-      [3,"hip-thrust","Hip thrust en máquina","3 × 10–12","↔ 2"],
-      [4,"pull-through","Pull-through en polea","2 × 12–15","Fijo"],
-      [5,"ext-cuad","Extensión de cuádriceps","3 × 12–15","↔ 6, 7"],
-      [6,"abduccion","Abducción de cadera","2 × 15–20","↔ 5, 7"],
-      [7,"aduccion","Aducción de cadera","2 × 15–20","↔ 5, 6"],
+      [1,"curl-femoral","Curl femoral sentado","3 × 10–12","Fijo","E"],
+      [2,"prensa","Prensa horizontal","3 × 8–10","↔ 3","E"],
+      [3,"hip-thrust","Hip thrust en máquina","3 × 10–12","↔ 2","E"],
+      [4,"pull-through","Pull-through en polea","2 × 12–15","Fijo","I"],
+      [5,"ext-cuad","Extensión de cuádriceps","3 × 12–15","↔ 6, 7","I"],
+      [6,"abduccion","Abducción de cadera","2 × 15–20","↔ 5, 7","P"],
+      [7,"aduccion","Aducción de cadera","2 × 15–20","↔ 5, 6","P"],
     ],
     ss:{6:"Con la aducción (7), solo si es una máquina doble.",
         7:"Con la abducción (6), solo si es una máquina doble."}
   },
   torso: { n:"2", label:"Torso", title:"Torso + Hombro", c:"p2", on:"on2", meta:"Día 2 · 10 ejercicios · ~65–75 min",
     note:"Escápulas atrás y abajo en todos los empujes y tirones. Los cuatro primeros alternan empuje y tirón.",
+    time:{E:"unos 30 min",I:"unos 45–50 min",P:"si te sobra tiempo"},
     rows:[
-      [1,"press-inclinado-maquina","Press inclinado en máquina","3 × 8–10","Bloque 1–4"],
-      [2,"jalon","Jalón al pecho","3 × 8–10","Bloque 1–4"],
-      [3,"press-hombro","Press de hombro en máquina","2 × 8–10","Bloque 1–4"],
-      [4,"remo-pecho","Remo sentado en máquina","3 × 10–12","Bloque 1–4"],
-      [5,"pec-deck","Aperturas en máquina","2 × 12–15","Tras el 1"],
-      [6,"laterales","Laterales en polea","2 × 12–15","↔ 7, 8"],
-      [7,"curl-biceps","Curl inclinado o en polea","2 × 10–12","↔ 6, 8"],
-      [8,"triceps","Tríceps en polea (pushdown)","2 × 10–12","↔ 6, 7"],
-      [9,"y-raise","Y-raise con apoyo en pecho","2 × 15–20","Tras el 3"],
-      [10,"face-pull","Face pull","2 × 15–20","Tras el 3"],
+      [1,"press-inclinado-maquina","Press inclinado en máquina","3 × 8–10","Bloque 1–4","E"],
+      [2,"jalon","Jalón al pecho","3 × 8–10","Bloque 1–4","E"],
+      [3,"press-hombro","Press de hombro en máquina","2 × 8–10","Bloque 1–4","I"],
+      [4,"remo-pecho","Remo sentado en máquina","3 × 10–12","Bloque 1–4","E"],
+      [5,"pec-deck","Aperturas en máquina","2 × 12–15","Tras el 1","P"],
+      [6,"laterales","Laterales en polea","2 × 12–15","↔ 7, 8","I"],
+      [7,"curl-biceps","Curl inclinado o en polea","2 × 10–12","↔ 6, 8","P"],
+      [8,"triceps","Tríceps en polea (pushdown)","2 × 10–12","↔ 6, 7","P"],
+      [9,"y-raise","Y-raise con apoyo en pecho","2 × 15–20","Tras el 3","P"],
+      [10,"face-pull","Face pull","2 × 15–20","Tras el 3","I"],
     ],
     ss:{5:"Con las laterales (6), haciéndolas con mancuernas de pie: máquina + mancuernas.",
         6:"Con las aperturas (5): en ese caso, laterales con mancuernas de pie.",
@@ -175,17 +182,18 @@ const DAYS = {
   },
   fullbody: { n:"3", label:"Full Body", title:"Full Body + Brazos", c:"p3", on:"on3", meta:"Día 3 · 10 ejercicios · ~75–80 min (~70–75 con superseries)",
     note:"La sesión más flexible. El remo sentado en máquina, el mismo del Día 2, lleva el remo a 6 series por semana.",
+    time:{E:"unos 30 min",I:"unos 45–50 min",P:"si te sobra tiempo"},
     rows:[
-      [1,"press-banca","Press de pecho en máquina","3 × 8–10","Bloque 1–4"],
-      [2,"prensa","Prensa horizontal","3 × 8–10","Bloque 1–4"],
-      [3,"jalon","Jalón, agarre cerrado","3 × 10–12","Bloque 1–4"],
-      [4,"remo-pecho","Remo sentado en máquina","3 × 10–12","Bloque 1–4"],
-      [5,"curl-femoral","Curl femoral sentado","2 × 12–15","↔ 6"],
-      [6,"hip-thrust","Hip thrust en máquina","2 × 10–12","↔ 5"],
-      [7,"laterales","Laterales en polea","3 × 12–15","↔ 8, 9"],
-      [8,"martillo","Curl martillo","2 × 10–12","↔ 7, 9"],
-      [9,"triceps-cabeza","Tríceps sobre la cabeza en polea","2 × 10–12","↔ 7, 8"],
-      [10,"face-pull","Face pull","2 × 15–20","Tras el 7"],
+      [1,"press-banca","Press de pecho en máquina","3 × 8–10","Bloque 1–4","E"],
+      [2,"prensa","Prensa horizontal","3 × 8–10","Bloque 1–4","E"],
+      [3,"jalon","Jalón, agarre cerrado","3 × 10–12","Bloque 1–4","I"],
+      [4,"remo-pecho","Remo sentado en máquina","3 × 10–12","Bloque 1–4","E"],
+      [5,"curl-femoral","Curl femoral sentado","2 × 12–15","↔ 6","P"],
+      [6,"hip-thrust","Hip thrust en máquina","2 × 10–12","↔ 5","I"],
+      [7,"laterales","Laterales en polea","3 × 12–15","↔ 8, 9","P"],
+      [8,"martillo","Curl martillo","2 × 10–12","↔ 7, 9","P"],
+      [9,"triceps-cabeza","Tríceps sobre la cabeza en polea","2 × 10–12","↔ 7, 8","P"],
+      [10,"face-pull","Face pull","2 × 15–20","Tras el 7","I"],
     ],
     ss:{7:"Con el face pull (10): misma polea, laterales abajo y face pull a la altura de los ojos.",
         8:"Con el tríceps sobre la cabeza (9): polea + mancuernas, de pie junto a la polea.",
@@ -194,12 +202,13 @@ const DAYS = {
   },
   core: { n:"C", label:"Core", title:"Cardio + core", c:"p4", on:"on4", meta:"2 días intermedios · ~30 min",
     note:"El core va en estos días y no al final del gimnasio, para no alargar las sesiones ni llegar con el abdomen cansado a los ejercicios con carga. Cardio sin impacto, sin saltos, para no castigar los discos.",
+    time:{E:"unos 10 min",I:"unos 25 min",P:"si te sobra tiempo (30 min en total)"},
     rows:[
-      [1,"cardio","Cardio sin impacto","10–15 min · elíptica, bici o caminar","Primero"],
-      [2,"dead-bug","Dead bug","3 × 20 · 45 s de descanso","Bloque 2–5"],
-      [3,"plancha-lateral","Plancha lateral","3 × 30 s · 45 s de descanso","Bloque 2–5"],
-      [4,"bird-dog","Bird-dog","3 × 20 · 45 s de descanso","Bloque 2–5"],
-      [5,"plancha-frontal","Plancha frontal","2 × 25 s · 45 s de descanso","Bloque 2–5"],
+      [1,"cardio","Cardio sin impacto","10–15 min · elíptica, bici o caminar","Primero","I"],
+      [2,"dead-bug","Dead bug","3 × 20 · 45 s de descanso","Bloque 2–5","I"],
+      [3,"plancha-lateral","Plancha lateral","3 × 30 s · 45 s de descanso","Bloque 2–5","E"],
+      [4,"bird-dog","Bird-dog","3 × 20 · 45 s de descanso","Bloque 2–5","E"],
+      [5,"plancha-frontal","Plancha frontal","2 × 25 s · 45 s de descanso","Bloque 2–5","P"],
     ],
     ss:{}
   },
@@ -235,16 +244,23 @@ function renderPlates(active){
   el.querySelectorAll(".plate").forEach(b => b.addEventListener("click", () => go(b.dataset.k)));
 }
 
+const PRIO = {E:"Esencial", I:"Importante", P:"Prescindible"};
+function legend(d){
+  return `<ul class="prio-legend" aria-label="Prioridad según el tiempo">
+    <li><span class="dot E" aria-hidden="true"></span>Esenciales: ${esc(d.time.E)}</li>
+    <li><span class="dot I" aria-hidden="true"></span>+ Importantes: ${esc(d.time.I)}</li>
+    <li><span class="dot P" aria-hidden="true"></span>+ Prescindibles: ${esc(d.time.P)}</li></ul>`;
+}
 function renderDay(k){
   const d = DAYS[k];
   const root = document.documentElement.style;
   const m = document.getElementById("main");
   m.style.setProperty("--accent", `var(--${d.c})`);
   m.style.setProperty("--accent-on", `var(--${d.on})`);
-  const rows = d.rows.map(([n,id,name,sets,ord]) => {
+  const rows = d.rows.map(([n,id,name,sets,ord,pr]) => {
     const chip = `<span class="chip ${ord==="Fijo"?"fixed":""}">${esc(ord)}</span>`;
     const head = `<span class="num" aria-hidden="true">${n}</span>
-      <span class="ex-name">${esc(name)}<span class="ex-sets">${esc(sets)}</span></span>${chip}${chev}`;
+      <span class="ex-name">${esc(name)}<span class="ex-sets"><span class="dot ${pr}" aria-hidden="true"></span><span class="prio-word">${PRIO[pr]}</span> · ${esc(sets)}</span></span>${chip}${chev}`;
     if (!id || !EX[id]) return `<div class="ex plain"><div style="display:grid;grid-template-columns:34px 1fr auto 18px;align-items:center;gap:12px;padding:14px 0;min-height:64px">${head}</div></div>`;
     const e = EX[id];
     const ss = d.ss[n] ? `<div class="ss"><b>Superserie opcional</b> · ${esc(d.ss[n])}</div>` : "";
@@ -263,7 +279,7 @@ function renderDay(k){
       </div></details>`;
   }).join("");
   m.innerHTML = `<section aria-labelledby="tab-${k}">
-    <div class="day-head"><h1>${esc(d.title)}</h1><p class="day-meta">${esc(d.meta)}</p><p class="day-note">${esc(d.note)}</p></div>
+    <div class="day-head"><h1>${esc(d.title)}</h1><p class="day-meta">${esc(d.meta)}</p><p class="day-note">${esc(d.note)}</p>${legend(d)}</div>
     ${rows}</section>`;
   m.querySelectorAll("details.ex").forEach(det => det.addEventListener("toggle", () => {
     if (det.open) history.replaceState(null, "", `#${k}/${det.dataset.id}`);
@@ -320,6 +336,15 @@ function renderGuide(){
       <tr><td>Full Body</td><td>7 Laterales + 10 Face pull</td><td>Misma polea</td></tr>
     </tbody>
   </table>
+
+  <h2>Si vas justo de tiempo</h2>
+  <p>Cada ejercicio tiene un punto de color. Haz los de tu nivel de tiempo y los anteriores, en el orden de la lista.</p>
+  <ul class="prio-legend" style="flex-direction:column;gap:8px;font-size:16px">
+    <li><span class="dot E" aria-hidden="true"></span><b>Esencial</b>&nbsp;· unos 30 min con el calentamiento. Los ejercicios grandes de la sesión.</li>
+    <li><span class="dot I" aria-hidden="true"></span><b>Importante</b>&nbsp;· añádelos si tienes 45–50 min.</li>
+    <li><span class="dot P" aria-hidden="true"></span><b>Prescindible</b>&nbsp;· solo si te sobra tiempo.</li>
+  </ul>
+  <p style="margin-top:10px">Aunque vayas con prisa, no te saltes el calentamiento ni las series de aproximación. Las superseries también ahorran tiempo. En Cardio + core los tiempos son más cortos: verdes 10 min, + amarillos 25 min, todo 30 min.</p>
 
   <h2>Señales para parar</h2>
   <div class="signals">
